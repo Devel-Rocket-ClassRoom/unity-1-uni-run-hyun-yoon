@@ -104,6 +104,7 @@ public class PlayerControlor : MonoBehaviour
         if (collision.CompareTag("Coin") && !isDead)
         {
             gameManager.AddCoinWithHealth(energyP);
+            collision.gameObject.SetActive(false);
         }
     }
 

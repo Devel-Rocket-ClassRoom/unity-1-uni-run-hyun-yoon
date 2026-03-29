@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Platform : MonoBehaviour
+public class Top : MonoBehaviour
 {
 
     public GameObject[] hits;
@@ -12,13 +12,14 @@ public class Platform : MonoBehaviour
 
     private void OnEnable()
     {
+        int randNum = Random.Range(0, hits.Length);
+
         for (int i = 0; i < hits.Length; i++)
         {
-            bool randomActive = Random.value < objRatio;
-            
-            hits[i].SetActive(randomActive);
+            bool hitsActive = (randNum == i);
 
-            coins[i].SetActive(!randomActive);
+            hits[i].SetActive(hitsActive);
+            coins[i].SetActive(!hitsActive);
         }
 
         isSetpped = false;

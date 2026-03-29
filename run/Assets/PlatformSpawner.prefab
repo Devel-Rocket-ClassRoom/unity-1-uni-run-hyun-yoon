@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efe9bcba15e7ba04fa2e5624bf9a18b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformSpawner
-  platformPrefab: {fileID: 3651568665447113478, guid: 59dd24fba6f69e34bba73c9b403563dd, type: 3}
+  bottomPrefab: {fileID: 3651568665447113478, guid: 59dd24fba6f69e34bba73c9b403563dd, type: 3}
+  topPrefab: {fileID: 51851040564518695, guid: 234b6fad7aebc644288411f7d5c9c1ea, type: 3}
   count: 3
   spawnTimeRange: {x: 0.25, y: 0.85}
   timeSpawn: 0
-  yRange: {x: -3.5, y: -2.5}

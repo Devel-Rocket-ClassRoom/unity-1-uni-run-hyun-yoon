@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class GameManager : MonoBehaviour
@@ -8,13 +9,21 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public GameObject gameOverUI;
 
-    public float energy = 100f;
+    public Slider energySlider;
+
+    public float maxEnergy = 100f;
+    public float energy;
+    public float decayRate = 5f;
+
     private int coin = 0;
 
     public bool IsGameOver { get; private set; }
     private void Awake()
     {
         gameOverUI.SetActive(false);
+        energy = maxEnergy;
+        energySlider.maxValue = maxEnergy;
+        energySlider.value = energy;
     }
     // Update is called once per frame
     void Update()
@@ -24,7 +33,9 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        
+        energy -= decayRate * Time.deltaTime;
+
+        energySlider.value = energy;
     }
 
     public void AddCoinWithHealth(int add)

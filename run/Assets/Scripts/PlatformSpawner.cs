@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlatformSpawner : MonoBehaviour
 {
-    public GameObject platformPrefab;
+    public GameObject bottomPrefab;
+    public GameObject topPrefab;
     public int count = 3;
 
     public Vector2 spawnTimeRange = new Vector2(0.85f, 1.35f); //x:min y:max
@@ -10,21 +11,31 @@ public class PlatformSpawner : MonoBehaviour
 
     private float xPos = 20f;
 
-    private GameObject[] platforms;
-    private int currentIndex = 0;
+    private GameObject[] bottoms;
+    private GameObject[] tops;
+    private int bottomCurrIndex = 0;
+    private int topCurrIndex = 0;
 
-    private float lastSpawnTime;
+    private float bottomLastSpawnTime;
+    private float topLastSpawnTime;
 
     private GameManager gameManager;
 
     void Awake()
     {
-        platforms = new GameObject[count];
+        bottoms = new GameObject[count];
+        tops = new GameObject[count];
 
-        for (int i = 0; i < platforms.Length; i++)
+        for (int i = 0; i < bottoms.Length; i++)
         {
-            platforms[i] = Instantiate(platformPrefab);
-            platforms[i].SetActive(false);
+            bottoms[i] = Instantiate(bottomPrefab);
+            bottoms[i].SetActive(false);
+        }
+
+        for (int i = 0; i < tops.Length; i++)
+        {
+            tops[i] = Instantiate(topPrefab);
+            tops[i].SetActive(false);
         }
     }
 
@@ -32,7 +43,8 @@ public class PlatformSpawner : MonoBehaviour
     {
         gameManager = GameObject.FindWithTag("GameController")?.GetComponent<GameManager>();
 
-        lastSpawnTime = 0f;
+        bottomLastSpawnTime = 0f;
+        topLastSpawnTime = 0f;
         timeSpawn = 0f;
     }
 
@@ -44,21 +56,37 @@ public class PlatformSpawner : MonoBehaviour
             return;
         }
 
-        if (Time.time > lastSpawnTime + timeSpawn)
+        if (Time.time > topLastSpawnTime + spawnTimeRange.x)
         {
-            lastSpawnTime = Time.time;
+            topLastSpawnTime = Time.time;
+
+            Vector2 pos;
+            pos.x = xPos;
+            pos.y = 2.5f;
+
+            tops[topCurrIndex].transform.position = pos;
+
+            tops[topCurrIndex].SetActive(false);
+            tops[topCurrIndex].SetActive(true);
+
+            topCurrIndex = (int)Mathf.Repeat(topCurrIndex + 1, tops.Length);
+        }
+
+        if (Time.time > bottomLastSpawnTime + timeSpawn)
+        {
+            bottomLastSpawnTime = Time.time;
             timeSpawn = Random.Range(spawnTimeRange.x, spawnTimeRange.y);
 
             Vector2 pos;
             pos.x = xPos;
             pos.y = -3.0f;
 
-            platforms[currentIndex].transform.position = pos;
+            bottoms[bottomCurrIndex].transform.position = pos;
 
-            platforms[currentIndex].SetActive(false);
-            platforms[currentIndex].SetActive(true);
+            bottoms[bottomCurrIndex].SetActive(false);
+            bottoms[bottomCurrIndex].SetActive(true);
 
-            currentIndex = (int)Mathf.Repeat(currentIndex + 1, platforms.Length);
+            bottomCurrIndex = (int)Mathf.Repeat(bottomCurrIndex + 1, bottoms.Length);
         }
     }
 }
